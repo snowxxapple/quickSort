@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>快速排序</title>
+</head>
+<style type="text/css">
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    padding: 20px;
+}
+
+div {
+    width: 800px;
+    padding: 30px;
+    border: 2px solid black;
+    background: #cfe;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}
+
+p {
+    word-break: break-all;
+}
+
+h2 {
+    text-align: center;
+}
+</style>
+
+<body>
+    <h2>快速排序</h2>
+    <div>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+    <form onsubmit="return false">
+        <input type='radio' name='sort'>由小到大</input>
+        <input type='radio' name='sort'>由大到小</input> &nbsp; 起始值：
+        <input type='number' min='0' max='200'></input>
+        终止值：
+        <input type='number' min='0' max='200'></input>
+        <input type='submit' id='btn' value='排序'></input>
+    </form>
+</body>
+<script type="text/javascript">
+function quickSort1(arr) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    var base = Math.floor(arr.length / 2);
+    var baseValue = arr.splice(base, 1);
+    var left = [];
+    var right = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] <= baseValue) {
+            left.push(arr[i]);
+        } else {
+            right.push(arr[i]);
+        }
+    }
+    return quickSort1(left).concat([baseValue], quickSort1(right));
+}
+
+function quickSort2(arr) {
+    if (arr.length <= 1) {
+        return arr;
+    }
+    var base = Math.floor(arr.length / 2);
+    var baseValue = arr.splice(base, 1);
+    var left = [];
+    var right = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] <= baseValue) {
+            right.push(arr[i]);
+        } else {
+            left.push(arr[i]);
+        }
+    }
+    return quickSort2(left).concat([baseValue], quickSort2(right));
+}
+
+function sort(start, end) {
+    console.log(start);
+    console.log(end);
+    var end = Number(end);
+    var start = Number(start);
+    var oInput = document.getElementsByTagName('input');
+    var show = document.getElementsByTagName('p');
+    var arr = [];
+    if (end < start) {
+        alert('输入有错误');
+    } else if (oInput[0].checked == '' && oInput[1].checked == '') {
+        alert('请选择排序方式');
+    } else if (start > 200 || start < 0 || end > 200 || end < 0) {} else {
+
+        for (var i = 0; i < end - start + 1; i++) {
+            arr[i] = Math.floor(Math.random() * (end - start + 1) + start); //[start,end]随机数组成的数组
+        }
+        if (oInput[0].checked) {
+            show[0].innerHTML = '数组:' + arr + '</br><strong>由小到大的排列顺序为:</strong>';
+            sTl = quickSort1(arr);
+            show[1].innerHTML = '<strong>' + sTl + '</strong>';
+        }
+        if (oInput[1].checked) {
+            show[2].innerHTML = '数组:' + arr + '</br><strong>由大到小的排列顺序为:</strong>';
+            lTs = quickSort2(arr);
+            show[3].innerHTML = '<strong>' + lTs + '</strong>';
+        }
+    }
+
+}
+window.onload = function() {
+    var oInput = document.getElementsByTagName('input');
+    var oBtn = oInput[4];
+    oBtn.addEventListener('click', function() {
+        sort(oInput[2].value, oInput[3].value);
+    }, false);
+
+}
+</script>
+
+</html>
